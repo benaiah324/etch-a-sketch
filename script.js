@@ -22,8 +22,29 @@ function createGrid(size) {
         for (let j = 0; j < view.gridSize; j++) {
             const innerDiv = document.createElement("div")
             innerDiv.classList.add("etch-div")
+            // track darkness steps (0-10) and original color
+            innerDiv.dataset.darkness = '0'
             innerDiv.addEventListener("mouseenter", () => {
-                innerDiv.style.backgroundColor = getRandomColor()
+                let darkness = parseInt(innerDiv.dataset.darkness, 10)
+                if (darkness < 10) {
+                    darkness += 1
+                    // if first darken step, store original random color
+                    if (!('r' in innerDiv.dataset)) {
+                        const col = getRandomColorRGB()
+                        innerDiv.dataset.r = col.r
+                        innerDiv.dataset.g = col.g
+                        innerDiv.dataset.b = col.b
+                    }
+                    const r0 = parseInt(innerDiv.dataset.r, 10)
+                    const g0 = parseInt(innerDiv.dataset.g, 10)
+                    const b0 = parseInt(innerDiv.dataset.b, 10)
+                    const factor = Math.max(0, 1 - darkness * 0.1)
+                    const r = Math.round(r0 * factor)
+                    const g = Math.round(g0 * factor)
+                    const b = Math.round(b0 * factor)
+                    innerDiv.style.backgroundColor = `rgb(${r},${g},${b})`
+                    innerDiv.dataset.darkness = String(darkness)
+                }
             })
             lineDiv.appendChild(innerDiv)
         }
@@ -36,6 +57,13 @@ function getRandomColor() {
     let g = Math.floor(Math.random() * 256)
     let b = Math.floor(Math.random() * 256)
     return `rgb(${r},${g},${b})`
+}
+
+function getRandomColorRGB() {
+    const r = Math.floor(Math.random() * 256)
+    const g = Math.floor(Math.random() * 256)
+    const b = Math.floor(Math.random() * 256)
+    return { r, g, b }
 }
 
 function handleCreate() {
@@ -60,7 +88,13 @@ sizeInput.addEventListener('keydown', (e) => {
 
 function clearColors() {
     const cells = view.container.querySelectorAll('.etch-div')
-    cells.forEach(cell => cell.style.backgroundColor = '')
+    cells.forEach(cell => {
+        cell.style.backgroundColor = ''
+        cell.dataset.darkness = '0'
+        delete cell.dataset.r
+        delete cell.dataset.g
+        delete cell.dataset.b
+    })
 }
 
 clearBtn.addEventListener('click', clearColors)
