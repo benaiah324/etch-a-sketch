@@ -12,11 +12,9 @@ function createColoredSquare() {
         for (let j = 0; j < view.gridSize; j++) {
             const innerDiv = document.createElement("div")
             innerDiv.classList.add("etch-div")
-            let rgbRandomColor = getRandomColor()
-
-            innerDiv.addEventListener("mouseenter", (e) => {
-                e.preventDefault()
-                innerDiv.style.backgroundColor = rgbRandomColor
+            // generate a new random color each time the cursor enters
+            innerDiv.addEventListener("mouseenter", () => {
+                innerDiv.style.backgroundColor = getRandomColor()
             })
             lineDiv.appendChild(innerDiv)
         }
