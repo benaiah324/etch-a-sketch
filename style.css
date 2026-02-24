@@ -13,3 +13,21 @@ h1{
     font-size: 3rem;
     text-shadow: 5px 5px 5px purple;
 }
+
+.container{
+    background-color: aliceblue;
+    /* display: flex; */
+    flex-direction: column;
+}
+
+.line{
+    display: flex;
+    justify-content: center;
+}
+
+.etch-div{
+    width: 20px;
+    height: 20px;
+    flex: 1;
+    
+}
