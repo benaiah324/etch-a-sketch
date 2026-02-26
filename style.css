@@ -110,8 +110,8 @@ h1{
 
 .container{
     background-color: aliceblue;
-    width: 320px;
-    height: 320px;
+    width: 450px;
+    height: 450px;
     display: flex;
     flex-direction: column;
     border-radius: 14px;
